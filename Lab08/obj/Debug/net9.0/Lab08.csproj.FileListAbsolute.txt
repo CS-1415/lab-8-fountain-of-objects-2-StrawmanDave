@@ -1,0 +1,12 @@
+C:\Users\HumbleIcarus\Documents\Programming 1410-1415\Programming-1410\lab-8-fountain-of-objects-2-StrawmanDave\Lab08\bin\Debug\net9.0\Lab08.deps.json
+C:\Users\HumbleIcarus\Documents\Programming 1410-1415\Programming-1410\lab-8-fountain-of-objects-2-StrawmanDave\Lab08\bin\Debug\net9.0\Lab08.dll
+C:\Users\HumbleIcarus\Documents\Programming 1410-1415\Programming-1410\lab-8-fountain-of-objects-2-StrawmanDave\Lab08\bin\Debug\net9.0\Lab08.pdb
+C:\Users\HumbleIcarus\Documents\Programming 1410-1415\Programming-1410\lab-8-fountain-of-objects-2-StrawmanDave\Lab08\obj\Debug\net9.0\Lab08.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HumbleIcarus\Documents\Programming 1410-1415\Programming-1410\lab-8-fountain-of-objects-2-StrawmanDave\Lab08\obj\Debug\net9.0\Lab08.AssemblyInfoInputs.cache
+C:\Users\HumbleIcarus\Documents\Programming 1410-1415\Programming-1410\lab-8-fountain-of-objects-2-StrawmanDave\Lab08\obj\Debug\net9.0\Lab08.AssemblyInfo.cs
+C:\Users\HumbleIcarus\Documents\Programming 1410-1415\Programming-1410\lab-8-fountain-of-objects-2-StrawmanDave\Lab08\obj\Debug\net9.0\Lab08.csproj.CoreCompileInputs.cache
+C:\Users\HumbleIcarus\Documents\Programming 1410-1415\Programming-1410\lab-8-fountain-of-objects-2-StrawmanDave\Lab08\obj\Debug\net9.0\Lab08.sourcelink.json
+C:\Users\HumbleIcarus\Documents\Programming 1410-1415\Programming-1410\lab-8-fountain-of-objects-2-StrawmanDave\Lab08\obj\Debug\net9.0\Lab08.dll
+C:\Users\HumbleIcarus\Documents\Programming 1410-1415\Programming-1410\lab-8-fountain-of-objects-2-StrawmanDave\Lab08\obj\Debug\net9.0\refint\Lab08.dll
+C:\Users\HumbleIcarus\Documents\Programming 1410-1415\Programming-1410\lab-8-fountain-of-objects-2-StrawmanDave\Lab08\obj\Debug\net9.0\Lab08.pdb
+C:\Users\HumbleIcarus\Documents\Programming 1410-1415\Programming-1410\lab-8-fountain-of-objects-2-StrawmanDave\Lab08\obj\Debug\net9.0\ref\Lab08.dll

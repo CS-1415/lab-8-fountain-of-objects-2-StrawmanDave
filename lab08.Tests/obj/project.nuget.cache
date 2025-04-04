@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "dgSpecHash": "F/GsSAnci/A=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\HumbleIcarus\\Documents\\Programming 1410-1415\\Programming-1410\\lab-8-fountain-of-objects-2-StrawmanDave\\Lab08.Tests\\lab08.Tests.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\HumbleIcarus\\.nuget\\packages\\coverlet.collector\\6.0.2\\coverlet.collector.6.0.2.nupkg.sha512",
+    "C:\\Users\\HumbleIcarus\\.nuget\\packages\\microsoft.codecoverage\\17.12.0\\microsoft.codecoverage.17.12.0.nupkg.sha512",
+    "C:\\Users\\HumbleIcarus\\.nuget\\packages\\microsoft.net.test.sdk\\17.12.0\\microsoft.net.test.sdk.17.12.0.nupkg.sha512",
+    "C:\\Users\\HumbleIcarus\\.nuget\\packages\\microsoft.testplatform.objectmodel\\17.12.0\\microsoft.testplatform.objectmodel.17.12.0.nupkg.sha512",
+    "C:\\Users\\HumbleIcarus\\.nuget\\packages\\microsoft.testplatform.testhost\\17.12.0\\microsoft.testplatform.testhost.17.12.0.nupkg.sha512",
+    "C:\\Users\\HumbleIcarus\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\HumbleIcarus\\.nuget\\packages\\nunit\\4.2.2\\nunit.4.2.2.nupkg.sha512",
+    "C:\\Users\\HumbleIcarus\\.nuget\\packages\\nunit.analyzers\\4.4.0\\nunit.analyzers.4.4.0.nupkg.sha512",
+    "C:\\Users\\HumbleIcarus\\.nuget\\packages\\nunit3testadapter\\4.6.0\\nunit3testadapter.4.6.0.nupkg.sha512",
+    "C:\\Users\\HumbleIcarus\\.nuget\\packages\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512"
+  ],
+  "logs": []
+}
