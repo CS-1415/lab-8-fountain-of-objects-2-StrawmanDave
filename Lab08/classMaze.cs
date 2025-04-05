@@ -198,26 +198,36 @@ public class Maze
             clearSurroundings(y,x);
             rowColumn[y,x].item = ' ';
 
-            if(canMove(y+1, x-2) == true && canBePlaced(y+1, x-2))
+            if(canMove(y+1, x-2) == true)
             {
-                rowColumn[y+1, x-2] = maelstrom();
-                //setSurroundings(y+1,x-2, "You hear the growling and groaning of a malestrom nearby.");
-            }else if(canMove(y+1,x -1) == true && canBePlaced(y+1, x-1) == true)
+                if(canBePlaced(y+1, x-2) == true)
+                {
+                    rowColumn[y+1, x-2] = maelstrom();
+                }
+            }else if(canMove(y+1,x -1) == true)
             {
-                rowColumn[y+1, x-1] = maelstrom();
-                //setSurroundings(y+1,x-1, "You hear the growling and groaning of a malestrom nearby.");
-            }else if(canMove(y+1, x) == true && canBePlaced(y+1, x) == true)
+                if(canBePlaced(y+1, x-1) == true)
+                {
+                    rowColumn[y+1, x-1] = maelstrom();
+                }
+            }else if(canMove(y+1, x) == true )
             {
-                rowColumn[y+1, x] = maelstrom();
-                //setSurroundings(y+1,x, "You hear the growling and groaning of a malestrom nearby.");
-            }else if(canMove(y, x-2) == true && canBePlaced(y+1, x-2) == true)
+                if(canBePlaced(y+1, x) == true)
+                {
+                    rowColumn[y+1, x] = maelstrom();
+                }
+            }else if(canMove(y, x-2) == true)
             {
-                rowColumn[y, x-2] = maelstrom();
-                //setSurroundings(y,x-2, "You hear the growling and groaning of a malestrom nearby.");
-            }else if(canMove(y,x-1) == true && canBePlaced(y, x-2) == true)
+                if(canBePlaced(y+1, x-2) == true)
+                {
+                    rowColumn[y, x-2] = maelstrom();
+                }
+            }else if(canMove(y,x-1) == true)
             {
-                rowColumn[y, x-1] = maelstrom();
-                //setSurroundings(y,x-1, "You hear the growling and groaning of a malestrom nearby.");
+                if(canBePlaced(y, x-2) == true)
+                {
+                    rowColumn[y, x-1] = maelstrom();
+                }
             }else
             {
 

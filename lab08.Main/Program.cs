@@ -151,7 +151,7 @@ void runGame(Maze chosenMaze)
 
         Console.Clear();
         Console.WriteLine($"Coins {chosenMaze.player.Gold}");
-        //chosenMaze.DisplayMaze();
+        chosenMaze.DisplayMaze();
         Console.WriteLine($"You are in (Row={chosenMaze.y}, Column={chosenMaze.x})");
         Console.WriteLine(chosenMaze.Current.sense);
 
