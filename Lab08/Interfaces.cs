@@ -32,5 +32,3 @@ public interface IRoom
 
     object occupied{get; set;}
 }
-
-

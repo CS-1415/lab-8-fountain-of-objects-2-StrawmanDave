@@ -1,127 +1,54 @@
+using System.Globalization;
+
 namespace Lab08;
 
 public class GameObject
 {
-    //What do all game objects have in comman?
-    int mass; //Players and monsters will could have a max mass they can carry
-    int volume; //Consider making a backpack object with only mass that adds to players volume or item count.
+    public string? Name{get; set;}
+    public int Tier{get; set;}
+    public int Durability {get; set;}
+    public int Damage{get; set;}
+    public int Protection{get; set;}
 
+    public GameObject()
+    {
+        setName();
+        Tier = setTier();
+        Durability = setDurability();
+    }
+
+    public virtual int setDamage()
+    {
+        return 0;
+    }
+    public virtual void setProtactionLevel()
+    {
+        
+    }
+    public virtual int setDurability()
+    {
+        return 0;
+    }
+    public virtual int setTier()
+    {
+        return 0;
+    }
     public virtual int Cost()
     {
         return 0;
     }
-    //Revist inventory with mass and volume considerations
-}
-
-public class Armor : GameObject, IMaterial
-{
-    //If you have an armor in your invetory you will have protection
-    //The higher tier armors will automaticly be equiped
-    public string? Material;
-    public int Durabilty{get; set;}
-    public int Protection{get; set;}
-    int degration; //Depends on the tier and the weapon used
-
-    public Armor()
+    public virtual void setName()
     {
-        //Material will be random as well I just need to create a random material generator. 
-        Durabilty = randomDurabilty();
-        Material = "Wood";
-        setProtactionLevel();
-    }
-
-    public Armor(string material)
-    {
-        if(IsAcceptedMaterial(material) == true)
-        {
-            Material = material;
-            Durabilty = 100;
-        }
-        setProtactionLevel();
-    }
-
-    public void DescribeMaterial()
-    {
-        Console.WriteLine(Material);
-    }
-    public int randomDurabilty()
-    {
-        //Random durability
-        Random rand = new Random();
-        return rand.Next(0,101);
-    }
-
-    public void  setProtactionLevel() //taking damage from a weapon will depend on the protection level
-    {
-        switch(Material)
-        {
-            case "Wood":
-            Protection = 5;
-            break;
-            case "Iron":
-            Protection = 10;
-            break;
-            case "Steel":
-            Protection = 15;
-            break;
-            case "Titanium":
-            Protection = 20;
-            break;
-            case "Carbon Fiber":
-            //very light weight and high protection level so the duribility will go down less
-            Protection = 25;
-            break;
-        }
-    }
-    public int Tier()
-    {
-        int tier = 0;
-        switch(Material)
-        {
-            case "Wood":
-            tier = 1;
-            break;
-            case "Iron":
-            tier = 2;
-            break;
-            case "Steel":
-            tier = 3;
-            break;
-            case "Titanium":
-            tier = 4;
-            break;
-            case "Carbon Fiber":
-            //highest tier because the degregation is the lowest and the protection level is the highest.
-            tier = 5;
-            break;
-        }
-        return tier;
-    }
-
-    public bool IsAcceptedMaterial(string? input)
-    {
-        switch(input)
-        {
-            case "Wood":
-            case "Iron":
-            case "Steel":
-            case "Titanium":
-            case "Carbon Fiber":
-            Material = input;
-            return true;
-            //very light weight and high protection level so the duribility will go down less
-            case null:
-            default:
-            Console.WriteLine("Sorry we can not make armor out of that material please use a material that we can work with.");
-            return false;
-        }
+        Name = "GameObject";
     }
 }
 
 public class generalItem : GameObject
 {
-    string? Name;
-
+    generalItem()
+    {
+        setName();
+    }
     public generalItem(string name)
     {
         Name = name;
@@ -131,9 +58,9 @@ public class generalItem : GameObject
     {
         switch(Name)
         {
-            case "Health Potion":
-            return 30;
-            case "Rope":
+            case "health potion":
+            return 40;
+            case "rope":
             return 20;
             default:
             return 0;
@@ -141,179 +68,446 @@ public class generalItem : GameObject
     }
 }
 
-public class Weapon : GameObject
+public class Armor : GameObject
 {
-    public string? Name{get; set;}
-    public int Damage;
-
-    public override int Cost()
+    //If you have an armor in your invetory you will have protection
+    //The higher tier armors will automaticly be equiped
+    public string? Material;
+    public int Durabilty{get; set;}
+    
+    public Armor()
     {
-        return base.Cost();
+        //Material will be random as well I just need to create a random material generator. 
+        Material = null;
+        Durability = randomDurabilty();
+        Protection = randomProtectionLevel();
+        setName();
+    }
+    public Armor(string material)
+    {
+        if(IsAcceptedMaterial(material) == true)
+        {
+            Material = material;
+        }
+        setDurability();
+        setProtactionLevel();
+        setName();
+    }
+    public Armor(GameObject gameObject)
+    {
+        Name = gameObject.Name;
+        Durability = gameObject.Durability;
+
     }
 
-    public int setDamage()
+    public string? getMaterial(string input)
     {
-        if(Name == "Fists")
+        string[] split = input.Split();
+        if(IsAcceptedMaterial(split[0]) == true)
         {
-            Damage = 1;
-            return Damage;
+            return split[0];
+        }else if(IsAcceptedMaterial($"{split[0]} {split[1]}"))
+        {
+            return $"{split[0]} {split[1]}";
         }else
         {
-            return GetDamage();
+            return Material;
         }
     }
-
-    public virtual int GetDamage()
-    {
-        return Damage;
-    }
-
-    public virtual int getTier()
-    { // based off the name of the weapon the tier will change.
-        return 0;
-    }
-}
-
-public class Sword : Weapon, IMaterial
-{
-    public  string? Material;
-    public int Durabilty {get; set;}
-
-    public Sword(string material, int durability)
-    {
-        setName();
-        IsAcceptedMaterial(material);
-        Durabilty = durability;
-    }
-    public Sword(string material)
-    {
-        setName();
-        IsAcceptedMaterial(material);
-        Durabilty = randomDurabilty();
-    }
-
-    public override int GetDamage()
+    public override void setProtactionLevel() //taking damage from a weapon will depend on the protection level
     {
         switch(Material)
         {
-            case "Wood":
-            Damage = 20;
+            case "wood":
+            Protection = 5;
             break;
-            case "Iron":
-            Damage = 30;
+            case "iron":
+            Protection = 10;
             break;
-            case "Steel":
-            Damage = 50;
+            case "steel":
+            Protection = 15;
             break;
-            case "Carbon Fiber":
-            Damage = 65;
+            case "titanium":
+            Protection = 20;
+            break;
+            case "carbon fiber":
+            Protection = 25;
+            break;
+            case null:
+            default:
+            Protection = 0;
             break;
         }
-        return Damage;
     }
-
-    public int randomDurabilty()
+    public int randomProtectionLevel()
     {
         Random rand = new Random();
-        return rand.Next(0,101);
+        return rand.Next(0,26);
+    }
+    public override int setDurability()
+    {
+        switch(Material)
+        {
+            case "wood":
+            return 5;
+            case "iron":
+            return 10;
+            case "steel":
+            return 15;
+            case "titanium":
+            return 20;
+            case "carbon fiber":
+            return 25;
+            case null:
+            default:
+            return base.setDurability();
+        }
+    }
+    public int randomDurabilty()
+    {
+        //Random durability
+        Random rand = new Random();
+        return rand.Next(0,26);
+    }
+    public override int setTier()
+    {
+        switch(Material)
+        {
+            case "wood":
+            return 1;
+            case "iron":
+            return 2;
+            case "steel":
+            return 3;
+            case "titanium":
+            return 4;
+            case "carbon fiber":
+            //highest tier because the degregation is the lowest and the protection level is the highest.
+            return 5;
+            case null:
+            default:
+            return 0;
+        }
     }
 
-    public void DescribeMaterial()
-    {
-        Console.WriteLine(Material);
-    }
     public bool IsAcceptedMaterial(string? input)
     {
         switch(input)
         {
-            case "Wood":
-            case "Iron":
-            case "Steel":
-            case "Titanium":
-            case "Carbon Fiber":
+            case "wood":
+            case "iron":
+            case "steel":
+            case "titanium":
+            case "carbon fiber":
             Material = input;
             return true;
             //very light weight and high protection level so the duribility will go down less
             case null:
             default:
-            Console.WriteLine("Sorry we can not make armor out of that material please use a material that we can work with.");
             return false;
-        }
-    }
-
-    public override int getTier()
-    {
-        switch(Material)
-        {
-            case "Wood":
-            return 1;
-            case "Iron":
-            return 2;
-            case "Steel":
-            return 3;
-            case "Titanium":
-            return 4;
-            case "Carbon Fiber":
-            //highest tier because the degregation is the lowest and the protection level is the highest.
-            return 5;
-            default:
-            return 0;
         }
     }
     public override int Cost()
     {
-        return base.Cost(); // needs to be set based off the material or tier
+        switch(Material)
+        {
+            case "wood":
+            return 10;
+            case "iron":
+            return 20;
+            case "steel":
+            return 30;
+            case "titanium":
+            return 40;
+            case "carbon fiber":
+            return 50;
+            case null:
+            default:
+            return 0;
+        }
     }
 
-    public void setName()
+    public override void setName()
     {
-        Name = "Sword";
+        Name = $"{Material} Armor";
     }
 }
 
-public class Bow : Weapon, IMaterial
+public class Weapon : GameObject, IMaterial
 {
-    public string? Material;
-    public int Durabilty{get; set;}
+    public string? Material {get; set;}
 
+    public Weapon()
+    {
+        Tier = setTier();
+    }
+    public Weapon(string name)
+    {
+        Name = name;
+        Tier = setTier();
+    }
+    public Weapon(GameObject gameObject)
+    {
+        Name = gameObject.Name;
+        gameObject.Durability = Durability;
+        gameObject.Damage = Damage;
+        gameObject.Tier = Tier;
+        Material = getMaterial(gameObject.Name);
+    }
+
+    public string? getMaterial(string? input)
+    {
+        string[] split = input.Split();
+        if(IsAcceptedMaterial(split[0]) == true)
+        {  
+            return split[0];
+        }else if(IsAcceptedMaterial($"{split[0]} {split[1]}"))
+        {
+            return $"{split[0]} {split[1]}";
+        }else
+        {
+            return Material;
+        }
+    }
+    public override int setDamage()
+    {
+        if(Name == "fists")
+        {
+            return 1;
+        }else
+        {
+            return 0;
+        }
+    }
+    public virtual bool IsAcceptedMaterial(string input)
+    {
+       if(new Sword().IsAcceptedMaterial(input) == true || new Bow().IsAcceptedMaterial(input) == true)
+       {
+            return true;
+       }else
+       {
+            return false;
+       }
+    }
+    public override int setDurability()
+    {
+        if(Name == "Fists")
+        {
+            return 50;
+        }else
+        {
+           return base.setDurability();
+        }
+    }
+    public override int setTier()
+    { // based off the name of the weapon the tier will change.
+        return 0;
+    }
+    public override void setName()
+    {
+        Name = "Weapon";
+    }
+}
+
+public class Sword : Weapon
+{
+    public Sword()
+    {
+        setName();
+        Damage = randomDamage();
+        Durability = randomDurabilty();
+    }
+    public Sword(string material)
+    {
+        if (IsAcceptedMaterial(material) == true)
+        {
+            Material = material;
+        }
+        setName();
+        Damage = setDamage();
+        Durability = setDurability();
+    }
+
+    public override int setDamage()
+    {
+        switch(Material)
+        {
+            case "wood":
+            return 10;
+            case "iron":
+            return 20;
+            case "steel":
+            return 30;
+            case "titanium":
+            return 40;
+            case "carbon fiber":
+            return 50;
+            default:
+            return base.setDamage();
+        }
+    }
+
+    public int randomDamage()
+    {
+        Random rand = new Random();
+        return rand.Next(0,51);
+    }
+
+    public override int setDurability()
+    {
+        switch(Material)
+        {
+            case "wood":
+            return 5;
+            case "iron":
+            return 10;
+            case "steel":
+            return 15;
+            case "titanium":
+            return 20;
+            case "carbon fiber":
+            return 30;
+            default:
+            return base.setDurability();
+        }
+    }
+    public int randomDurabilty()
+    {
+        Random rand = new Random();
+        return rand.Next(0,31);
+    }
+    public override bool IsAcceptedMaterial(string? input)
+    {
+        switch(input)
+        {
+            case "wood":
+            case "iron":
+            case "steel":
+            case "titanium":
+            case "carbon fiber":
+            Material = input;
+            return true;
+            //very light weight and high protection level so the duribility will go down less
+            case null:
+            default:
+            return false;
+        }
+    }
+
+    public override int setTier()
+    {
+        switch(Material)
+        {
+            case "wood":
+            return 1;
+            case "iron":
+            return 2;
+            case "steel":
+            return 3;
+            case "titanium":
+            return 4;
+            case "carbon fiber":
+            return 5;
+            default:
+            return base.setTier();
+        }
+    }
+    public override int Cost()
+    {
+         // needs to be set based off the material or tier
+        switch(Material)
+        {
+            case "wood":
+            return 15;
+            case "iron":
+            return 30;
+            case "steel":
+            return 45;
+            case "titanium":
+            return 60;
+            case "carbon fiber":
+            return 85;
+            default:
+            return base.Cost();
+        }
+    }
+
+    public override void setName()
+    {
+        Name = $"{Material} Sword";
+    }
+}
+
+public class Bow : Weapon
+{
+    Arrow currentArrow{get;set;}
+
+    public Bow()
+    {
+        Durability = randomDurabilty();
+        currentArrow = new Arrow();
+    }
     public Bow(string material)
     {
         if(IsAcceptedMaterial(material) == true)
         {
             Material = material;
         }
+        setName();
+        currentArrow = new Arrow();
     }
-    public override int Cost()
+    public Bow(string material, Arrow arrow)
+    {
+        if(IsAcceptedMaterial(material) == true)
+        {
+            Material = material;
+        }
+        currentArrow = arrow;
+    }
+
+    public override int setDamage()
+    {
+        return DamageMultiplyer() + currentArrow.setDamage();
+    }
+    public int DamageMultiplyer() //If you shoot a certain arrow with a bow the multipler will mutiply that damage.
     {
         switch(Material)
         {
-            case "Wood":
+            case "wood":
+            return 2;
+            case "horn":
             return 5;
-            case "Horn":
-            return 15;
-            case "Carbon Fiber":
-            return 45;
+            case "carbon fiber":
+            return 7;
             default:
             return 0;
         }
     }
-    public void setName()
+    public override int setDurability()
     {
-        Name = "Bow";
+        switch(Material)
+        {
+            case "wood":
+            return 5;
+            case "horn":
+            return 10;
+            case "carbon fiber":
+            return 15;
+        }
+        return base.setDurability();
     }
-
-    public void DescribeMaterial()
+    public int randomDurabilty()
     {
-        Console.WriteLine($"This is a {Material} {Name}");
+        Random rand = new Random();
+        return rand.Next(0,15);
     }
-
-    public bool IsAcceptedMaterial(string? input)
+    public override bool IsAcceptedMaterial(string? input)
     {
         switch(input)
         {
-            case "Wood":
-            case "Horn":
-            case "Carbon Fiber":
+            case "wood":
+            case "horn":
+            case "carbon fiber":
             Material = input;
             return true;
             case null:
@@ -321,64 +515,66 @@ public class Bow : Weapon, IMaterial
             return false;
         }
     }
-
-    public int randomDurabilty()
-    {
-        Random rand = new Random();
-        return rand.Next(0,101);
-    }
-
-    public override int getTier()
+    public override int setTier()
     {
         switch(Material)
         {
-            case "Wood":
+            case "wood":
             return 1;
-            case "Horn":
+            case "horn":
             return 2;
-            case "Carbon Fiber":
+            case "carbon fiber":
             return 3;
             default:
             return 0;
         }
     }
-
-    public int DamageMultiplyer() //If you shoot a certain arrow with a bow the multipler will mutiply that damage.
+    public override int Cost()
     {
         switch(Material)
         {
-            case "Wood":
-            return 1;
-            case "Horn":
-            return 3;
-            case "Carbon Fiber":
+            case "wood":
             return 5;
+            case "horn":
+            return 25;
+            case "carbon fiber":
+            return 25;
             default:
-            return 0;
+            return base.Cost();
         }
+    }
+    public override void setName()
+    {
+        Name = $"{Material} Bow";
     }
 }
 
 public class Arrow : Weapon, IFleching , IArrowHead
 {
-    public string? fleching;
-    public string? arrowhead;
+    public string? Fleching;
+    public string? Arrowhead;
 
+    public Arrow()
+    {
+        Fleching = null;
+        Arrowhead = null;
+    }
     public Arrow(string? fleching, string? arrowhead)
     {
-        this.fleching = fleching;
-        this.arrowhead = arrowhead;
-    }
-    public void DescribeFletching()
-    {
-        Console.WriteLine(fleching);
+        Fleching = fleching;
+        Arrowhead = arrowhead;
+        setName();
     }
 
+    public void DescribeFletching()
+    {
+        Console.WriteLine(Fleching);
+    }
     public int GetCostFleching()
     {
         //plastic costs 10,turkey costs 5 and goose costs 3
         int cost = 0;
-        switch (fleching)
+        switch (Fleching)
         {
             case "plastic":
             cost = 10;
@@ -392,17 +588,15 @@ public class Arrow : Weapon, IFleching , IArrowHead
         }
         return cost;
     }
-
     public void DescribeArrowHead()
     {
-        Console.WriteLine(arrowhead);
+        Console.WriteLine(Arrowhead);
     }
-
     public int GetCostArrowHead()
     {
         //steel costs 10, wood costs 3 obsidian costs 5
         int cost = 0;
-        switch (arrowhead)
+        switch (Arrowhead)
         {
             case "steel":
             cost = 10;
@@ -416,10 +610,9 @@ public class Arrow : Weapon, IFleching , IArrowHead
         }
         return cost;
     }
-
-    public int Damage()
+    public override int setDamage()
     {
-        switch(getTier())
+        switch(setTier())
         {
             case 1:
             case 2:
@@ -437,9 +630,9 @@ public class Arrow : Weapon, IFleching , IArrowHead
             return 0;
         }
     }
-    public override int getTier()
+    public override int setTier()
     {
-        string? tier = arrowhead  + " " + fleching;
+        string? tier = Arrowhead  + " " + Fleching;
         switch (tier)
         {
             case "wood goose":
@@ -467,5 +660,9 @@ public class Arrow : Weapon, IFleching , IArrowHead
     public override int Cost()
     {
         return GetCostArrowHead() + GetCostFleching();
+    }
+    public override void setName()
+    {
+        Name = $"{Arrowhead} {Fleching} Arrow";
     }
 }

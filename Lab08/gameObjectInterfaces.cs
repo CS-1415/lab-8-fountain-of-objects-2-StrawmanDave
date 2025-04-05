@@ -13,8 +13,6 @@ interface IArrowHead
 
 interface IMaterial
 {
-    public int Durabilty{get; set;}
-    void DescribeMaterial();
+    string? Material{get; set;}
     bool IsAcceptedMaterial(string input);
-    int randomDurabilty();
 }

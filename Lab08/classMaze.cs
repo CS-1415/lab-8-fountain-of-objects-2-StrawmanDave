@@ -43,6 +43,7 @@ public class Maze
         setAromas();
         Current = rowColumn[y,x];
     }
+
     public void setArray()
     {
         for(int row = 0; row< rowColumn.GetLength(0); row++)
@@ -53,14 +54,12 @@ public class Maze
             }
         }
     }
-
     public void setStart()
     {
         rowColumn[0,0].sense = "You see light coming from the cavern entrance.";
         rowColumn[0,0].item = 'D';
         rowColumn[0,0].occupied = new object();
     }
-
     public void setFountainLocation()
     {
         Random rand = new Random();
@@ -91,11 +90,10 @@ public class Maze
             }
         }
     }
-
     public void setPits()
     {
         Random rand = new Random();
-        for(int i = 0; i<rowColumn.GetLength(0); i++)
+        for(int i = 1; i<rowColumn.GetLength(0); i++) // the row is set to one so there will never be pit on row 1 this makes you can alwayse get out if you have a rope
         {
             for(int j = 0; j<rowColumn.GetLength(1); j++)
             {
@@ -119,23 +117,34 @@ public class Maze
             {
                 if(rowColumn[i,j].item == 'M')
                 {
-                    setSurroundings(i,j, new Maelstrom().Aroma());
+                    Maelstrom newMonster = new Maelstrom();
+                    if(newMonster.Aroma() == null)
+                    {
+                        throw new NullReferenceException();
+                    }else
+                    {
+                        setSurroundings(i,j, newMonster.Aroma());
+                    }
                 }
                 
                 if(rowColumn[i,j].item == 'A')
                 {
-                    setSurroundings(i,j, new Amarok().Aroma());
+                    Amarok newMonster = new Amarok();
+                    if(newMonster.Aroma() == null)
+                    {
+                        throw new NullReferenceException();
+                    }
+                    setSurroundings(i,j, newMonster.Aroma());
                 }
 
                 if(rowColumn[i,j].item == 'P')
                 {
+                    PitRoom newRoom = new PitRoom();
                     setSurroundings(i,j, PitRoom.Aroma);
                 }
             }
         }
     }
-
-
     public void resetMaze()
     {
         for(int i = 0; i <rowColumn.GetLength(0); i++) // idea is to go through each item in the maze and set the sense of each room to " "
@@ -158,12 +167,15 @@ public class Maze
                     rowColumn[row,column].sense = "You hear water dripping in this room. The Fountain of Objects is here!";
                 }else if(rowColumn[row,column].item == 'P')
                 {
+                    rowColumn[row, column].sense = new PitRoom().sense;
                     setSurroundings(row,column,"You feel a draft. There is a pit in a nearby room");
                 }else if(rowColumn[row,column].item == 'M')
                 {
+                    rowColumn[row, column].sense = new MonsterRoom(new Maelstrom()).sense;
                     setSurroundings(row,column, "You hear the growling and groaning of a maelstrom nearby.");
                 }else if(rowColumn[row,column].item == 'A')
                 {
+                    rowColumn[row, column].sense = new MonsterRoom(new Amarok()).sense;
                     setSurroundings(row,column,"You can smell the rotten stench of an amarok in a nearby room");
                 }else if(rowColumn[row,column].item == 'D')
                 {
@@ -175,8 +187,7 @@ public class Maze
 
     public Room maelstrom()
     {
-        Room Maelstrom = new Room();
-        Maelstrom.item = 'M';
+        Room Maelstrom = new MonsterRoom();
         return Maelstrom;
     }
 
@@ -187,23 +198,23 @@ public class Maze
             clearSurroundings(y,x);
             rowColumn[y,x].item = ' ';
 
-            if(canMove(y+1, x-2) == true)
+            if(canMove(y+1, x-2) == true && canBePlaced(y+1, x-2))
             {
                 rowColumn[y+1, x-2] = maelstrom();
                 //setSurroundings(y+1,x-2, "You hear the growling and groaning of a malestrom nearby.");
-            }else if(canMove(y+1,x -1) == true)
+            }else if(canMove(y+1,x -1) == true && canBePlaced(y+1, x-1) == true)
             {
                 rowColumn[y+1, x-1] = maelstrom();
                 //setSurroundings(y+1,x-1, "You hear the growling and groaning of a malestrom nearby.");
-            }else if(canMove(y+1, x))
+            }else if(canMove(y+1, x) == true && canBePlaced(y+1, x) == true)
             {
                 rowColumn[y+1, x] = maelstrom();
                 //setSurroundings(y+1,x, "You hear the growling and groaning of a malestrom nearby.");
-            }else if(canMove(y, x-2))
+            }else if(canMove(y, x-2) == true && canBePlaced(y+1, x-2) == true)
             {
                 rowColumn[y, x-2] = maelstrom();
                 //setSurroundings(y,x-2, "You hear the growling and groaning of a malestrom nearby.");
-            }else if(canMove(y,x-1))
+            }else if(canMove(y,x-1) == true && canBePlaced(y, x-2) == true)
             {
                 rowColumn[y, x-1] = maelstrom();
                 //setSurroundings(y,x-1, "You hear the growling and groaning of a malestrom nearby.");
@@ -218,7 +229,6 @@ public class Maze
             moveEast();
         }
     }
-
     public void clearSurroundings(int row, int column)
     {
         if(canMove(row -1, column) == true) // one south
@@ -261,7 +271,7 @@ public class Maze
             rowColumn[row +1, column +1].sense = " ";
         }
     }
-    public void setSurroundings(int row, int column, string words)
+    public void setSurroundings(int row, int column, string? words)
     {
         
         if(canMove(row -1, column) == true) // one south
@@ -352,7 +362,6 @@ public class Maze
             }
         }
     }
-
     public void removeAllRoomTypes(char contains)
     {
         for(int row = 0; row< rowColumn.GetLength(0); row++)
@@ -366,7 +375,6 @@ public class Maze
             }
         }
     }
-
     public bool canBePlaced(int row, int column)
     {
         if(rowColumn[row,column].item == 'F')
@@ -389,8 +397,6 @@ public class Maze
             return true;
         }
     }
-
-
     public bool canMove(int row, int column)
     {
         if(row >= rowColumn.GetLength(0) || row < 0)
@@ -404,7 +410,6 @@ public class Maze
         }
         return true;
     }
-
     public void DisplayMaze()
     {
         for(int row = 0; row< rowColumn.GetLength(0); row++)
@@ -416,7 +421,6 @@ public class Maze
             Console.WriteLine();
         }
     }
-
     public void moveNorth()
     {
         if(canMove(y-1, x) == true) //current.Row current.column
@@ -433,7 +437,6 @@ public class Maze
             Current = rowColumn[y,x];
         }        
     }
-
     public void moveWest()
     {
         if(canMove(y, x-1) == true) //current.Row current.column
@@ -442,7 +445,6 @@ public class Maze
             Current = rowColumn[y,x];
         }
     }
-
     public void moveEast()
     {
         if(canMove(y, x+1) == true) //current.Row current.column

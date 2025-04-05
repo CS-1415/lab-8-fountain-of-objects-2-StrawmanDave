@@ -15,8 +15,8 @@ public class ArmorTests
     [Test]
     public void TestTier()
     {
-        _Armor.IsAcceptedMaterial("Wood");
-        Debug.Assert(_Armor.Tier() == 1);
+        _Armor.IsAcceptedMaterial("wood");
+        Debug.Assert(_Armor.setTier() == 1);
     }
 
     [Test]
@@ -24,10 +24,10 @@ public class ArmorTests
     {
         Debug.Assert(_Armor.IsAcceptedMaterial("bleh") == false);
         Debug.Assert(_Armor.IsAcceptedMaterial(null) == false);
-        Debug.Assert(_Armor.IsAcceptedMaterial("Wood") == true);
-        Debug.Assert(_Armor.IsAcceptedMaterial("Iron") == true);
-        Debug.Assert(_Armor.IsAcceptedMaterial("Steel") == true);
-        Debug.Assert(_Armor.IsAcceptedMaterial("Titanium") == true);
-        Debug.Assert(_Armor.IsAcceptedMaterial("Carbon Fiber") == true);
+        Debug.Assert(_Armor.IsAcceptedMaterial("wood") == true);
+        Debug.Assert(_Armor.IsAcceptedMaterial("iron") == true);
+        Debug.Assert(_Armor.IsAcceptedMaterial("steel") == true);
+        Debug.Assert(_Armor.IsAcceptedMaterial("titanium") == true);
+        Debug.Assert(_Armor.IsAcceptedMaterial("carbon fiber") == true);
     }
 }

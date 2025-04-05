@@ -1,8 +1,4 @@
-﻿using System.Collections.Specialized;
-using System.Runtime.CompilerServices;
-using System.Security.AccessControl;
-
-namespace Lab08;
+﻿namespace Lab08;
 
 public class Room
 {
@@ -11,7 +7,7 @@ public class Room
 
     public string? sense = null;
     public char item;
-    public virtual Object occupied{get; set;}
+    public virtual object occupied{get; set;}
     public virtual Monster monster{get; set;}
 
     public Room()
@@ -20,96 +16,11 @@ public class Room
         sense = " ";
         item = ' ';
         occupied = new object();
+        monster = new Monster();
     }
 }
 
-public class Monster : IMonster, IInventory, IHealth
-{
-    public int Gold{get; set;}
-    public string? monsterName{get; set;}
-    public int MaxHealth{get; set;}
-    public int currentHealth{get; set;}
-    public int maxItems { get; set; }
-    public List<GameObject> Inventory{ get; set;}
-    public Weapon currentWeapon{get; set;}
-    public Armor currentArmor{get; set;}
 
-    public Monster()
-    {
-        Inventory = new List<GameObject>();
-        currentArmor = new Armor("Iron");
-        currentWeapon = new Sword("Iron");
-        setMaxHealth();
-        setCurrentHealth();
-        setMonsterName();
-        setCoinAmount();
-    }
-
-    public void setCurrentHealth()
-    {
-        currentHealth = MaxHealth;
-    }
-
-    public virtual void setMaxHealth()
-    {
-        MaxHealth = 0;
-    }
-    public virtual void setMaxItems()
-    {
-        maxItems = 0;
-    }
-    public virtual void setCoinAmount()
-    {
-        Gold = 10;
-    }
-    public void addToInventory(GameObject gameObject)
-    {
-        if(canAddItems() == true)
-        {
-            Inventory.Add(gameObject);
-        }
-    }
-
-    public virtual void equip()
-    {
-        Sword basic = new Sword("Iron");
-        Armor basicArmor = new Armor("Iron");
-        currentWeapon = basic;
-        currentArmor = basicArmor;
-        addToInventory(basic);
-        addToInventory(basicArmor);
-    }
-
-    public bool canAddItems()
-    {
-        if(Inventory.Count() < maxItems)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public virtual void setMonsterName()
-    {
-        monsterName = "Monster";
-    }
-    public string displayMonster()
-    {
-        setMonsterName();
-        return monsterName;
-    }
-
-    public virtual string? Aroma()
-    {
-        return "You here growling there is a monster nearby.";
-    }
-
-    public override string ToString()
-    {
-        setMonsterName();
-        return monsterName;
-    }
-}
 
 public class MonsterRoom : Room
 {
@@ -122,9 +33,14 @@ public class MonsterRoom : Room
         currentMonster = GetMonster();
         occupied = currentMonster;
         sense = $"You encounter a {currentMonster} as you scramble to pull out your weapon";
-
     }
 
+    public MonsterRoom(Monster monster)
+    {
+        currentMonster = monster;
+        occupied = currentMonster;
+        sense = $"You encounter a {currentMonster} as you scramble to pull out your weapon";
+    }
 
     public Monster getCurrentMonster()
     {
@@ -181,13 +97,106 @@ public class PitRoom : Room
     }
 }
 
+public class Monster : IMonster, IInventory, IHealth
+{
+    public int Gold{get; set;}
+    public string? monsterName{get; set;}
+    public int MaxHealth{get; set;}
+    public int currentHealth{get; set;}
+    public int maxItems { get; set; }
+    public List<GameObject> Inventory{ get; set;}
+    public Weapon currentWeapon{get; set;}
+    public Armor currentArmor{get; set;}
+
+    public Monster()
+    {
+        Inventory = new List<GameObject>();
+        currentArmor = new Armor();
+        currentWeapon = new Weapon();
+        equip();
+        setMaxHealth();
+        setCurrentHealth();
+        setMonsterName();
+        setCoinAmount();
+    }
+
+    public void setCurrentHealth()
+    {
+        currentHealth = MaxHealth;
+    }
+
+    public virtual void setMaxHealth()
+    {
+        MaxHealth = 0;
+    }
+    public virtual void setMaxItems()
+    {
+        maxItems = 0;
+    }
+    public virtual void setCoinAmount()
+    {
+        Gold = 10;
+    }
+    public void addToInventory(GameObject gameObject)
+    {
+        if(canAddItems() == true)
+        {
+            Inventory.Add(gameObject);
+        }
+    }
+
+    public virtual void equip()
+    {
+        currentArmor = new Armor();
+        currentWeapon = new Weapon();
+    }
+
+    public bool canAddItems()
+    {
+        if(Inventory.Count() < maxItems)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public virtual void setMonsterName()
+    {
+        monsterName = "Monster";
+    }
+    public string displayMonster()
+    {
+        setMonsterName();
+        if(monsterName == null)
+        {
+            throw new NullReferenceException();
+        }
+        return monsterName;
+    }
+
+    public virtual string? Aroma()
+    {
+        return "You here growling there is a monster nearby.";
+    }
+
+    public override string ToString()
+    {
+        setMonsterName();
+        if(monsterName == null)
+        {
+            throw new NullReferenceException();
+        }
+        return monsterName;
+    }
+}
+
 public class Amarok : Monster
 {
     //Amaroks will die and clear the room when defeated in battle
     //If you lose to them in battle or run out of health you die.
     public override void setMaxHealth()
     {
-        MaxHealth = 30;
+        MaxHealth = 200;
     }
 
     public override void setMonsterName()
@@ -204,6 +213,12 @@ public class Amarok : Monster
     {
         return "You can smell the rotten stench of an amarock in a nearby room";
     }
+
+    public override void equip()
+    {
+        currentArmor = new Armor();
+        currentWeapon = new Sword();
+    }
     public override void setCoinAmount()
     {
         Gold = 20;
@@ -217,7 +232,7 @@ public class Maelstrom : Monster
 
     public override void setMaxHealth()
     {
-        MaxHealth = 20;
+        MaxHealth = 150;
     }
     public override void setMonsterName()
     {
@@ -226,7 +241,13 @@ public class Maelstrom : Monster
 
     public override void setMaxItems()
     {
-        maxItems = 2;
+        maxItems = 3;
+    }
+
+    public override void equip()
+    {
+        currentArmor = new Armor();
+        currentWeapon = new Sword();
     }
 
     public override void setCoinAmount()
@@ -246,26 +267,20 @@ public class Player : IHealth, IInventory
     public int MaxHealth{get; set;}
     public int currentHealth{get; set;}
     public int maxItems {get; set;}
-    public List<GameObject>? Inventory{get; set;}
+    public List<GameObject> Inventory {get; set;}
     public Weapon? currentWeapon;
     public Armor? currentArmor;
 
     public Player()
     {
-        Inventory = new List<GameObject>();
-        currentWeapon = Fists();
-        Inventory.Add(Fists());
-        currentArmor = basic();
-        Inventory.Add(basic());
-        setMaxHealth();
-        setCurrentHealth();
         setMaxItems();
+        setMaxHealth();
+        Inventory = new List<GameObject>();
+        setCurrentHealth();
+        setCurrentArmor(new Armor());
+        setCurrentWeapon(new Weapon("fists"));
     }
 
-    public Armor basic()
-    {
-        return new Armor("Wood");
-    }
     public int getGold()
     {
         return Gold;
@@ -289,29 +304,12 @@ public class Player : IHealth, IInventory
         {
             Console.WriteLine("You have no weapon equiped");
         }
-    }
-
-    public void discardWeapon()
-    {
-        if(canRemoveItem(currentWeapon) == true)
-        {
-            Inventory.Remove(currentWeapon);
-        }else
-        {
-            Console.WriteLine("You have no armor equuiped");
-        }
-    }
-
-    public void discardArmor()
-    {
-        if(canRemoveItem(currentArmor) == true)
-        {
-            Inventory.Remove(currentArmor);
-        }
+        setBestArmor();
+        setBestWeapon();
     }
     public void setMaxHealth()
     {
-        MaxHealth = 50;
+        MaxHealth = 100;
     }
 
     public void setCurrentHealth()
@@ -333,15 +331,12 @@ public class Player : IHealth, IInventory
         currentArmor = armor;
     }
 
-    public Weapon Fists()
-    {
-        Weapon fists = new Weapon();
-        fists.Name = "Fists";
-        return fists;
-    }
-
     public bool canAddItems()
     {
+        if(Inventory == null)
+        {
+            Inventory = new List<GameObject>();
+        }
         if(Inventory.Count > maxItems)
         {
             return false;
@@ -353,6 +348,11 @@ public class Player : IHealth, IInventory
 
     public bool canRemoveItem(GameObject gameObject)
     {
+        if(Inventory == null)
+        {
+            Inventory = new List<GameObject>();
+        }
+
         if(Inventory.Contains(gameObject))
         {
             return true;
@@ -363,12 +363,32 @@ public class Player : IHealth, IInventory
         }
         return false;
     }
-
+    public void setBestWeapon()
+    {
+        for(int i = 0; i< Inventory.Count(); i++)
+        {
+            if(Inventory[i].Tier > currentWeapon.Tier)
+            {
+                setCurrentWeapon(new Weapon(Inventory[i]));
+            }
+        }
+    }
+    public void setBestArmor()
+    {
+        for(int i = 0; i<Inventory.Count(); i++)
+        {
+            if(Inventory[i].Tier > currentArmor.Tier)
+            {
+                setCurrentArmor(new Armor(Inventory[i]));
+            }
+        }
+    }
+    
     public void displayInventory()
     {
         foreach(GameObject item in Inventory)
         {
-            Console.Write($"{item}, ");
+            Console.Write($"{item.Name}, ");
         }
     }
 }
